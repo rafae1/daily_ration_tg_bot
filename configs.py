@@ -11,5 +11,5 @@ login = os.getenv("LOGIN")
 password = os.getenv("PASSWORD")
 main_page = os.getenv("MAIN_PAGE")
 
-START_DATE = datetime.strptime("2020-05-31", '%Y-%m-%d')
+START_DATE = datetime.strptime(os.getenv("START_DATE"), '%Y-%m-%d')
 DB_NAME = "daily_ration.db"
