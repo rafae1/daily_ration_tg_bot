@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+
+  tgbot:
+    container_name: recipe_bot
+    build:
+      context: .
+    volumes:
+      - .:/src
+    command: python app.py
+    restart: always
+
+    env_file:
+      - ".env"
+
