@@ -20,7 +20,7 @@ class Eating(Enum):
         return texts.get(key, default) if key else texts
 
     @classmethod
-    def get_key(cls, value):
+    def get_key_by_value(cls, value):
         for k, v in cls.verbose().items():
             if v == value:
                 return k
