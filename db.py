@@ -11,7 +11,8 @@ class DailyRation:
     @staticmethod
     def get_current_week_and_day():
         start_date = datetime.strptime(conf["start_date"], '%Y-%m-%d')
-        marathon_day_num = (datetime.now() - start_date).days % conf["marathon_duration"] - 1
+        diff_between_start = (datetime.now() - start_date).days
+        marathon_day_num = diff_between_start % conf["marathon_duration"] - 1
         week = marathon_day_num // 7 + 1
         day = marathon_day_num % 7 + 1
         return [week, day]
@@ -27,8 +28,8 @@ class DailyRation:
     async def get_daily_ration(cls):
         week, day = cls.get_current_week_and_day()
         today_daily_ration_sql = f"""
-            SELECT {', '.join(cls.select_fields)} 
-            FROM recipes 
+            SELECT {', '.join(cls.select_fields)}
+            FROM recipes
             WHERE week = {week} AND day = {day};
         """
         cursor = await conn.execute(today_daily_ration_sql)
@@ -45,8 +46,8 @@ class DailyRation:
         week, day = cls.get_current_week_and_day()
         eating = Eating.get_key_by_value(message)
         today_eating_sql = f"""
-            SELECT {', '.join(cls.select_fields)} 
-            FROM recipes 
+            SELECT {', '.join(cls.select_fields)}
+            FROM recipes
             WHERE week = {week} AND day = {day} AND eating = {eating};
         """
         cursor = await conn.execute(today_eating_sql)
@@ -60,8 +61,8 @@ class DailyRation:
     async def get_random_eating(cls, message):
         eating = Eating.get_key_by_value(message[6:])
         today_eating_sql = f"""
-            SELECT {', '.join(cls.select_fields)} 
-            FROM recipes 
+            SELECT {', '.join(cls.select_fields)}
+            FROM recipes
             WHERE eating = {eating}
             ORDER BY RANDOM() LIMIT 1;
         """
@@ -82,11 +83,11 @@ class DailyRation:
         capitalized_message = message_text.capitalize()
         search_by_str = f"""
             SELECT {', '.join(cls.select_fields)}
-            FROM recipes 
-            WHERE 
-            title LIKE '%{lower_message}%' OR 
+            FROM recipes
+            WHERE
+            title LIKE '%{lower_message}%' OR
             title LIKE '%{capitalized_message}%' OR
-            ingredients LIKE '%{lower_message}%' OR 
+            ingredients LIKE '%{lower_message}%' OR
             ingredients LIKE '%{capitalized_message}%'
             GROUP BY title;
         """

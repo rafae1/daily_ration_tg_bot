@@ -18,7 +18,7 @@ class Scrapper:
     login_url = f"{conf['parser']['main_page']}/login"
     ration_url = f"{conf['parser']['main_page']}/marafon/food-custom"
 
-    url_from_css = re.compile("\((.*)\)")
+    url_from_css = re.compile(r"\((.*)\)")
 
     download_dir = "downloads/"
     if not os.path.exists("downloads/"):
@@ -65,11 +65,11 @@ class Scrapper:
         async with aiosqlite.connect(conf["db_name"]) as conn:
             await conn.execute("""
                 CREATE TABLE IF NOT EXISTS recipes
-                (week integer, day integer, eating integer, title text, 
+                (week integer, day integer, eating integer, title text,
                 ingredients text, cooking text, pic_name text)
             """)
             await conn.executemany("""
-                INSERT INTO recipes 
+                INSERT INTO recipes
                 VALUES (?,?,?,?,?,?,?)
             """, self.recipes)
             await conn.commit()
@@ -95,7 +95,8 @@ class Scrapper:
         if not pic_div_styles:
             return pic_name
         pic_url = self.url_from_css.search(pic_div_styles).group(1)
-        async with self.session.get(f"{conf['parser']['main_page']}{pic_url}") as response:
+        async with self.session.get(
+                f"{conf['parser']['main_page']}{pic_url}") as response:
             img_data = await response.content.read()
             pic_name = pic_url.split("/")[-1]
             with open(self.download_dir + pic_name, 'wb') as handler:
