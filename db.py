@@ -45,7 +45,7 @@ class DailyRation:
         cursor = await conn.execute(today_eating_sql)
         row = await cursor.fetchone()
         return {
-            field: format_field(field, row[i])
+            field: cls.format_field(field, row[i])
             for i, field in enumerate(cls.select_fields)
         }
 
@@ -61,7 +61,7 @@ class DailyRation:
         cursor = await conn.execute(today_eating_sql)
         row = await cursor.fetchone()
         return {
-            field: format_field(field, row[i])
+            field: cls.format_field(field, row[i])
             for i, field in enumerate(cls.select_fields)
         }
 
@@ -87,7 +87,7 @@ class DailyRation:
         rows = await cursor.fetchall()
         return [
             {
-                field: format_field(field, row[i])
+                field: cls.format_field(field, row[i])
                 for i, field in enumerate(cls.select_fields)
             } for row in rows
         ], err
