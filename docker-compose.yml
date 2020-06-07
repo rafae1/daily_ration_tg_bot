@@ -10,7 +10,3 @@ services:
       - .:/src
     command: python app.py
     restart: always
-
-    env_file:
-      - ".env"
-

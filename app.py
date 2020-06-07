@@ -5,8 +5,7 @@ from aiogram import Bot
 from aiogram import Dispatcher
 from aiogram import executor
 
-from configs import TOKEN, DB_NAME
-from configs import admin_id
+from configs import conf
 
 logging.basicConfig(
     format=u'%(filename)s [LINE:%(lineno)d] '
@@ -14,19 +13,19 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-bot = Bot(token=TOKEN, parse_mode="HTML")
+bot = Bot(token=conf["bot"]["token"], parse_mode="HTML")
 dp = Dispatcher(bot)
 
 
 async def create_pool():
-    return await aiosqlite.connect(DB_NAME)
+    return await aiosqlite.connect(conf["db_name"])
 
 
 conn = dp.loop.run_until_complete(create_pool())
 
 
 async def on_startup(dp):
-    await bot.send_message(admin_id, "Я запущен!")
+    await bot.send_message(conf["bot"]["admin_id"], "Я запущен!")
 
 
 async def on_shutdown(dp):

@@ -7,7 +7,7 @@ import aiohttp
 import aiosqlite
 from bs4 import BeautifulSoup
 
-from configs import main_page, password, login, DB_NAME
+from configs import conf
 
 
 class Scrapper:
@@ -15,8 +15,8 @@ class Scrapper:
     days_in_week = range(1, 8)  # 7 days in week
     all_days_with_recipes = itertools.product(weeks, days_in_week)
 
-    login_url = f"{main_page}/login"
-    ration_url = f"{main_page}/marafon/food-custom"
+    login_url = f"{conf['parser']['main_page']}/login"
+    ration_url = f"{conf['parser']['main_page']}/marafon/food-custom"
 
     url_from_css = re.compile("\((.*)\)")
 
@@ -40,8 +40,8 @@ class Scrapper:
 
     async def authorize(self):
         data = {
-            "LoginForm[email]": login,
-            "LoginForm[password]": password,
+            "LoginForm[email]": conf['parser']['login'],
+            "LoginForm[password]": conf['parser']['password'],
         }
         async with self.session.post(self.login_url, data=data) as response:
             return await response.text()
@@ -62,7 +62,7 @@ class Scrapper:
             self.recipes.append(row)
 
     async def save_all_recipes(self):
-        async with aiosqlite.connect(DB_NAME) as conn:
+        async with aiosqlite.connect(conf["db_name"]) as conn:
             await conn.execute("""
                 CREATE TABLE IF NOT EXISTS recipes
                 (week integer, day integer, eating integer, title text, 
@@ -95,7 +95,7 @@ class Scrapper:
         if not pic_div_styles:
             return pic_name
         pic_url = self.url_from_css.search(pic_div_styles).group(1)
-        async with self.session.get(f"{main_page}{pic_url}") as response:
+        async with self.session.get(f"{conf['parser']['main_page']}{pic_url}") as response:
             img_data = await response.content.read()
             pic_name = pic_url.split("/")[-1]
             with open(self.download_dir + pic_name, 'wb') as handler:

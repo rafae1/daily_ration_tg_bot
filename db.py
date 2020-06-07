@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from configs import START_DATE, marathon_duration
+from configs import conf
 from eating import Eating
 from helpers import format_field
 from app import conn
@@ -11,7 +11,8 @@ class DailyRation:
 
     @staticmethod
     def get_current_week_and_day():
-        marathon_day_num = (datetime.now() - START_DATE).days % marathon_duration - 1
+        start_date = datetime.strptime(conf["start_date"], '%Y-%m-%d')
+        marathon_day_num = (datetime.now() - start_date).days % conf["marathon_duration"] - 1
         week = marathon_day_num // 7 + 1
         day = marathon_day_num % 7 + 1
         return [week, day]
