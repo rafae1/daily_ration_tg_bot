@@ -6,4 +6,5 @@ cchardet==2.1.6
 aiodns==2.0.0
 uvloop==0.12.2
 ujson==1.35
-python-dotenv==0.13.0
+anyconfig==0.9.11
+PyYAML==5.3.1
