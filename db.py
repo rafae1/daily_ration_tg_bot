@@ -11,9 +11,9 @@ class DailyRation:
 
     @staticmethod
     def get_current_week_and_day():
-        marathon_day_num = (datetime.now() - START_DATE).days % marathon_duration
-        week = marathon_day_num // 7
-        day = marathon_day_num % 7
+        marathon_day_num = (datetime.now() - START_DATE).days % marathon_duration - 1
+        week = marathon_day_num // 7 + 1
+        day = marathon_day_num % 7 + 1
         return [week, day]
 
     @classmethod
