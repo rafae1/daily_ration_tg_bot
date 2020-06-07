@@ -2,7 +2,6 @@ from datetime import datetime
 
 from configs import conf
 from eating import Eating
-from helpers import format_field
 from app import conn
 
 
@@ -17,6 +16,13 @@ class DailyRation:
         day = marathon_day_num % 7 + 1
         return [week, day]
 
+    @staticmethod
+    def format_field(field_name, value):
+        if field_name == "eating":
+            return Eating.verbose(value)
+        else:
+            return value
+
     @classmethod
     async def get_daily_ration(cls):
         week, day = cls.get_current_week_and_day()
@@ -29,7 +35,7 @@ class DailyRation:
         rows = await cursor.fetchall()
         return [
             {
-                field: format_field(field, row[i])
+                field: cls.format_field(field, row[i])
                 for i, field in enumerate(cls.select_fields)
             } for row in rows
         ]
