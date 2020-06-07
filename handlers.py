@@ -70,3 +70,13 @@ async def get_today_eating(message: Message):
 async def get_random_eating(message: Message):
     recipe = await DailyRation.get_random_eating(message.text)
     await send_recipe(message, recipe)
+
+
+@dp.message_handler()
+async def get_recipes_by_str(message: Message):
+    recipes, err = await DailyRation.get_recipe_by_str(message)
+    if err:
+        await message.answer(err)
+        return
+    for recipe in recipes:
+        await send_recipe(message, recipe)
