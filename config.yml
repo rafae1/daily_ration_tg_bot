@@ -1,0 +1,13 @@
+db_name: "daily_ration.db"
+start_date: "2020-05-25"
+marathon_duration: 8
+
+parser:
+  login: ""
+  password: ""
+  main_page: ""
+
+bot:
+  token: ""
+  admin_id: 0
+
