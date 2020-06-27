@@ -7,21 +7,9 @@ from aiogram import executor
 
 from configs import conf
 
-logging.basicConfig(
-    format=u'%(filename)s [LINE:%(lineno)d] '
-           u'#%(levelname)-8s [%(asctime)s]  %(message)s',
-    level=logging.INFO
-)
-
-bot = Bot(token=conf["bot"]["token"], parse_mode="HTML")
-dp = Dispatcher(bot)
-
 
 async def create_pool():
     return await aiosqlite.connect(conf["db_name"])
-
-
-conn = dp.loop.run_until_complete(create_pool())
 
 
 async def on_startup(dp):
@@ -31,6 +19,16 @@ async def on_startup(dp):
 async def on_shutdown(dp):
     await bot.close()
 
+
+logging.basicConfig(
+    format=u'%(filename)s [LINE:%(lineno)d] '
+           u'#%(levelname)-8s [%(asctime)s]  %(message)s',
+    level=logging.INFO
+)
+
+bot = Bot(token=conf["bot"]["token"], parse_mode="HTML")
+dp = Dispatcher(bot)
+conn = dp.loop.run_until_complete(create_pool())
 
 if __name__ == '__main__':
     from handlers import dp
