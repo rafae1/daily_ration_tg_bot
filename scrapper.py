@@ -15,7 +15,7 @@ class Scrapper:
     days_in_week = range(1, 8)  # 7 days in week
     all_days_with_recipes = itertools.product(weeks, days_in_week)
 
-    eating = ["Завтрак", "Перекус 1", "Обед", "Перекус2", "Ужин"]
+    eating = ["Завтрак", "Перекус 1", "Обед", "Перекус 2", "Ужин"]
 
     login_url = f"{conf['parser']['main_page']}/login"
     ration_url = f"{conf['parser']['main_page']}/marafon/food-custom"
