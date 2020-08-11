@@ -4,3 +4,9 @@ A small project for my wife. She is interested in a healthy lifestyle and asked 
 <strong>Using:</strong><br />
 ./docker_install.sh<br />
 docker-compose up -d --build
+
+<strong>Roadmap:</strong><br />
+1. Fix work with file system (use threadpools)
+2. Use postgres instead of SQLite
+3. Use async ORM, e.g. PonyORM
+4. Add route to add own recipe
